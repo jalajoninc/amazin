@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    Fore more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+  -->
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="hello">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>hello</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <!-- This script installs service_worker.js to provide PWA functionality to
+       application. For more information, see:
+       https://developers.google.com/web/fundamentals/primers/service-workers -->
+
+  <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular.min.js'></script>      
+  <script src='https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js'></script>       
+  <script src='https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js'></script>       
+  <script src='https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js'></script>       
+  <script src='https://www.gstatic.com/firebasejs/8.10.0/firebase.js'></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAUvsqSgvmkUKRYlfLz6LEHJkistkRQUfU",
+      authDomain: "amazin-49da5.firebaseapp.com",
+      databaseURL: "https://amazin-49da5-default-rtdb.firebaseio.com",
+      projectId: "amazin-49da5",
+      storageBucket: "amazin-49da5.appspot.com",
+      messagingSenderId: "912494033283",
+      appId: "1:912494033283:web:0a72a80f09d67010d11eb6",
+      measurementId: "G-BC3K3Z94FS"
+  };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+  function signinWatchFB2(email, password, upath, callback ){     
+      firebase.auth().signInWithEmailAndPassword(email, password ).then((userCredential) => {
+          var user = userCredential.user;         
+          watchFB2(upath, callback);      
+      }).catch((error) => {          
+          var errorCode = error.code;          
+          var errorMessage = error.message;          
+      });         
+  }    
+
+  function watchFB2(upath, callback ){     
+    var ref = firebase.database().ref( upath );         
+    ref.on('value', function(snapshot) {             
+        var d = JSON.stringify(snapshot.val() );    
+          callback( d );
+    });     
+  }     
+
+  function getParams(upath) {
+    var idx = document.URL.indexOf('?');
+    var params = new Array();
+    if (idx != -1) {
+    var pairs = document.URL.substring(idx+1, document.URL.length).split('&');
+    for (var i=0; i<pairs.length; i++) {
+        nameVal = pairs[i].split('=');
+        params[nameVal[0]] = nameVal[1];
+        alert(nameVal[1]);
+      }
+    }
+    return params;
+}
+
+</script>
+
+  
+  
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('flutter-first-frame', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js?v=1672634591');
+      });
+    }
+  </script>
+  <script src="main.dart.js" type="application/javascript"></script>
+</body>
+</html>

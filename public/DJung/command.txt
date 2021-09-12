@@ -1,0 +1,5 @@
+flutter create myapp
+cd myapp
+flutter run -d chrome
+flutter build web
+flutter pub get
